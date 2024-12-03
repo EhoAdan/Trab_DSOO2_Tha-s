@@ -125,7 +125,7 @@ Sua senha é: {senha}
 
     def abre_jogador(self):
         if not self.__logou:
-            print("Você precisa realizar LogIn antes de Jogar")
+            self.__tela_sistema.exibe_mensagem("Você precisa fazer login antes de jogar.")
             return None
         # Ações login não é um nome muito apropriado pra agora mas enfim
         self.__controlador_jogador.acoes_login()

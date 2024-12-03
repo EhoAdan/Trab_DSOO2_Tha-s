@@ -38,4 +38,12 @@ class TelaSistema:
             [sg.Radio('Fechar o Jogo',"RD1", key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
-        self.__window = sg.Window('Sistema de livros').Layout(layout)
+        self.__window = sg.Window('O jogo').Layout(layout)
+
+    def exibe_mensagem(self, mensagem):
+        layout = [
+            [sg.Text(mensagem)],
+            [sg.Button('Ok')]
+        ]
+        self.__window = sg.Window('O jogo').Layout(layout)
+        self.__window.Read()
