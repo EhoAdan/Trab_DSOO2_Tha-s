@@ -50,78 +50,72 @@ class ControladorSistema:
         self.abre_tela()
 
     def encerrar(self):
-        print("Jogo encerrado")
+        self.__tela_sistema.exibe_mensagem("Jogo encerrado.")
         exit()
 
     def login(self):
-        email_ou_usuario = input("Favor, digite seu endereço de e-mail ou usuário: ")
-        senha_informada = input("Favor, digite sua senha: ")
-        for usuario_registrado in self.__controlador_jogador.jogadores:
-            if (usuario_registrado.email == email_ou_usuario or
-                usuario_registrado.nome == email_ou_usuario):
-                if usuario_registrado.senha == senha_informada:
-                    self.__controlador_jogador.jogador_logado = usuario_registrado
-                    self.__loja.jogador = usuario_registrado
-                    self.__logou = True
-                    print(f"Você logou como: {self.__controlador_jogador.jogador_logado.nome}")
-                    return usuario_registrado
-        print("Usuário, email ou senha estão errados.")
-        return None
+        while True:
+            email_ou_usuario, senha_informada = self.__tela_sistema.login()
+            usuario_existe = False
+            if email_ou_usuario == '':  
+                # Sai do login caso o botão cancelar seja apertado, também
+                # sai do login caso confirme sem nada escrito, mas não sei bem como arrumar
+                # de qualquer jeito, acho que não tem muito problema deixar assim
+                break
+            for usuario_registrado in self.__controlador_jogador.jogadores:
+                if (usuario_registrado.email == email_ou_usuario or
+                        usuario_registrado.nome == email_ou_usuario):
+                    usuario_existe = True
+                    if usuario_registrado.senha == senha_informada:
+                        self.__controlador_jogador.jogador_logado = usuario_registrado
+                        self.__loja.jogador = usuario_registrado
+                        self.__logou = True
+                        self.__tela_sistema.exibe_mensagem(f"Você logou como: {self.__controlador_jogador.jogador_logado.nome}")
+                        return usuario_registrado
+                    break # Sai do loop caso o usuário exista mas a senha esteja errada
+            if not usuario_existe:
+                self.__tela_sistema.exibe_mensagem("Usuário ou email não encontrado.")
+            else:
+                self.__tela_sistema.exibe_mensagem("Senha incorreta.")
 
     def criar_conta(self):
-        while True:
-            # Caso não surja o NameError, ou seja, ter o email certo, quebra o loop
-            try:
-                #Funciona
-                email = str(input("Digite seu endereço de e-mail: "))
-                if any(email_usado.email == email for email_usado in 
-                       self.__controlador_jogador.jogadores):
-                    print("E-mail já está em uso")
-                    raise NameError
-                if ("@" not in email or email[0] == "@" or email[-1] == "@"):
-                    raise NameError
-                break
-            except NameError:
-                print("Favor inserir um e-mail válido")
+        conta_criada = False # Usado para verificar se saiu da tela de criar conta
+                             # Criando uma conta ou só cancelando o processo
         while True:
             try:
                 #Funciona
-                nome = str(input("Digite seu nome de usuário: "))
+                nome, email, senha = self.__tela_sistema.criar_conta()
+                if nome == '':
+                    break
                 if any(usuario_existe.nome == nome for usuario_existe 
                        in self.__controlador_jogador.jogadores):
-                    print("Nome de usuário já existe")
+                    mensagem = "Nome de usuário já existe."
                     raise NameError
-                break
-            except NameError:
-                print("Favor inserir um nome válido")
-        while True:
-            try:
-                #Funciona
-                senha = input("""Digite sua senha
-Ela deve possuir:
-Ao menos 8 caracteres
-Ao menos um número
-Ao menos uma letra
-""")
+                # Daqui até o break só é necessário por eu não ter conseguido implementar
+                # botão desabilitado dinâmico, mas se decidirmos manter assim, dá pra criar
+                # um erro customizado pra isso
                 if len(senha) < 8:
-                    print("Senha muito curta!")
+                    mensagem = "Senha curta demais"
                     raise NameError
-                if not any(caractere.isnumeric() for caractere in senha):
-                    print("Senha não possui número!")
+                if not any(char.isdigit() for char in senha):
+                    mensagem = "Senha necessita de números"
                     raise NameError
-                if not any(caractere.isalpha() for caractere in senha):
-                    print("Senha não possui letra!")
+                if not any(char.isalpha() for char in senha):
+                    mensagem = "Senha necessita de letras"
                     raise NameError
+                if not any(char == '@' for char in email) or email[0] == '@' or email[-1] == '@':
+                    mensagem = "Email inválido"
+                    raise NameError
+                conta_criada = True
                 break
             except NameError:
-                print("Favor inserir uma senha válida")
-        jogador_novo = Jogador(nome, email, senha)
-        self.__controlador_jogador.jogadores.append(jogador_novo)
-        print(f"""Nova conta criada com sucesso!
+                self.__tela_sistema.exibe_mensagem(mensagem)
+        if conta_criada:
+            jogador_novo = Jogador(nome, email, senha)
+            self.__controlador_jogador.jogadores.append(jogador_novo)
+            self.__tela_sistema.exibe_mensagem(f"""Nova conta criada com sucesso!
 Seu nome de Jogador é: {nome}
-Seu e-mail é: {email}
-Sua senha é: {senha}
-""")
+Seu e-mail é: {email}""")
 
     def abre_jogador(self):
         if not self.__logou:
@@ -132,7 +126,7 @@ Sua senha é: {senha}
 
     def abre_loja(self):
         if not self.__logou:
-            print("Você precisa realizar LogIn antes de abrir a Loja")
+            self.__tela_sistema.exibe_mensagem("Você precisa fazer login antes de entrar na loja.")
             return None
         self.loja.abre_tela()
 
@@ -144,6 +138,8 @@ Sua senha é: {senha}
                     4: self.login}
         while True:
             tela_opcoes[self.__tela_sistema.menu_opcoes()]()
+
+# Talvez dê pra fazer um controlador só de login e criação de contas
 
 
 ornn = Personagem("Ornn", 1000, ["Ornn Florescer Espiritual"])
