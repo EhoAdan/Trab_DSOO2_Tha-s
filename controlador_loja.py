@@ -12,7 +12,6 @@ class ControladorLoja:
         # Serve como o controlador de itens
         self.__tela_loja = TelaLoja()
         self.__itens = itens
-        self.__controlador_sistema = controlador_sistema
         self.__controlador_jogador = ControladorJogador(controlador_sistema)
         self.__jogador = jogador
         self.__jogador_logado = 0
@@ -88,7 +87,7 @@ class ControladorLoja:
         self.__historico_compras = historico_compras
 
     def abre_tela(self):
-        opcoes_loja = {0: self.__controlador_sistema.abre_tela,
+        opcoes_loja = {0: None,
                 1: self.buscar_todos_itens_loja,
                 2: self.buscar_itens_disponiveis,
                 3: self.comprar_item,
@@ -97,20 +96,23 @@ class ControladorLoja:
                 }
 
         while True:
-            opcoes_loja[self.__tela_loja.abre_tela()]()
+            opcao = opcoes_loja[self.__tela_loja.menu_opcoes()]
+            if not opcao:
+                return None
+            opcao()
 
     def buscar_todos_itens_loja(self):
         i = 0
+        lista_itens = []
         for item in self.__itens:
             i += 1
-            print(f"{i}: {item.nome}")
+            lista_itens.append(f"{i}: {item.nome}")
+        self.__tela_loja.exibir_itens(lista_itens)
         return None
 
-    def buscar_itens_disponiveis(self, comprar = False):
+    def buscar_itens_disponiveis(self):
         i = 0
-        if comprar:
-            lista_itens_num = {0: None}
-            print("0: Retornar")
+        lista_itens = []
         for item in self.__itens:
             if (item not in self.__jogador.lista_itens_jogador and
                 (isinstance(item, Personagem) or item.personagem in self.__jogador.lista_itens_jogador)):
@@ -118,27 +120,29 @@ class ControladorLoja:
                 # caso não esteja, verifica se é um personagem ou skin, caso seja skin,
                 # verifica se o jogador tem o personagem ao qual a skin pertence
                 i += 1
-                mensagem_mostrar = f"{i}: {item.nome}"
-                if comprar:
-                    # Como tem que atualizar o dicionário com cada iteração
-                    # acho que os prints tem que ficar aqui mesmo e não na tela
-                    mensagem_mostrar += f" por {item.preco}"
-                    lista_itens_num[i] = item
-                print(mensagem_mostrar)
-        if comprar:
-            opcao_usuario = self.__tela_loja.buscar_itens(i)
-            return lista_itens_num[opcao_usuario]
-        return None
+                lista_itens.append(f"{i}: {item.nome}")
+        self.__tela_loja.exibir_itens(lista_itens)
 
     def comprar_item(self):
         # Vou deixar sem presentear por enquanto, mas se puxar do controlador de jogador
         # Deve dar sem muito problema
         while True:
-            print(f"Saldo atual: {self.__jogador.saldo}")
-            item_comprado = self.buscar_itens_disponiveis(True)
+            saldo = self.__jogador.saldo
+            # Verifica se o item tá no inventário e adiciona ele caso seja um personagem ou,
+            # caso seja uma skin, o personagem à qual a skin pertence tá no inventário
+            itens_disponiveis = [item for item in self.__itens if item 
+                                 not in self.__jogador.lista_itens_jogador and 
+                                 (isinstance(item, Personagem) or item.personagem in 
+                                  self.__jogador.lista_itens_jogador)]
+            amigos = self.__jogador.amigos
+            item_comprado = self.__tela_loja.comprar_item(saldo, itens_disponiveis, amigos)
+            if item_comprado == 0:  # Caso seja cancelada a compra
+                return None
+            item_comprado = itens_disponiveis[item_comprado - 1] # Pega o número retornado e vê qual item
+                                                                 # tá na posição
             if not item_comprado:
                 return None
-            if self.__jogador.saldo >= item_comprado.preco:
+            if saldo >= item_comprado.preco:
                 if isinstance(item_comprado, Skin):
                     tipo_item = "skin"
                 else:
@@ -147,17 +151,25 @@ class ControladorLoja:
                 self.__jogador.saldo -= item_comprado.preco
                 self.__jogador.lista_itens_jogador.append(item_comprado)
                 self.__historico_compras.append(compra)
+                self.__tela_loja.exibe_mensagem(f"Sucesso, você comprou {item_comprado.nome} por {item_comprado.preco}!")
                 return None
-            print("Saldo insuficiente.")
+            self.__tela_loja.exibe_mensagem("Saldo insuficiente.")
 
     def ver_hist_compras(self):
+        hist_compras = []
         for compra in self.__historico_compras:
-            self.__tela_loja.historico_compras(compra.jogador.nome, compra.item.preco,
-                                               compra.item.nome, compra.data, compra.tipo_item)
+            hist_compras.append(f"{compra.jogador.nome} comprou o/a {compra.tipo_item} "
+                                f"{compra.item.nome} por {compra.item.preco} pontos no dia {compra.data} "
+                                f"às {compra.hora}.")
+        self.__tela_loja.historico_compras(hist_compras)
         return None
 
     def ver_hist_compras_proprio(self):
+        hist_compras = []
         for compra in self.__historico_compras:
             if compra.jogador.nome == self.__jogador.nome:
-                self.__tela_loja.historico_compras(compra.jogador.nome, compra.item.preco,
-                                                compra.item.nome, compra.data, compra.tipo_item)
+                hist_compras.append(f"{compra.jogador.nome} comprou o/a {compra.tipo_item} "
+                                f"{compra.item.nome} por {compra.item.preco} pontos no dia {compra.data} "
+                                f"às {compra.hora}.")
+        self.__tela_loja.historico_compras(hist_compras)
+        return None

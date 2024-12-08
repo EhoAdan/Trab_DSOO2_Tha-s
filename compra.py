@@ -7,7 +7,8 @@ class Compra:
     def __init__(self, jogador: Jogador, item: Item, tipo_item: str):
         self.__jogador = jogador
         self.__item = item
-        self.__data = datetime.today().strftime("%m-%Y")
+        self.__data = datetime.today().strftime("%d/%m/%Y")
+        self.__hora = datetime.now().strftime("%H:%M")
         self.__tipo_item = tipo_item
     
     @property
@@ -25,3 +26,7 @@ class Compra:
     @property
     def tipo_item(self):
         return self.__tipo_item
+
+    @property
+    def hora(self):
+        return self.__hora
