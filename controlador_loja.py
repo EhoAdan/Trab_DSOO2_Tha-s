@@ -161,7 +161,7 @@ class ControladorLoja:
                             break
                     if not num_existe:
                         break
-                compra = Compra(self.__jogador, item_comprado, tipo_item, "vendeu", compra_num)
+                compra = Compra(self.__jogador, item_comprado, tipo_item, "comprou", compra_num)
                 self.__jogador.saldo -= item_comprado.preco
                 self.__jogador.lista_itens_jogador.append(item_comprado)
                 self.__historico_compras.append(compra)
