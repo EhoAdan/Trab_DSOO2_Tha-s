@@ -78,24 +78,25 @@ class ControladorJogador:
         return None
 
     def adicionar_amigo(self):
-        nome_jogador = input("Digite o nome do jogador que quer adicionar: ")
-        jogador_existe = self.eh_jogador(nome_jogador)
+        amigo = self.__tela_jogador.tela_adicionar_amigo()
+        jogador_existe = self.eh_jogador(amigo)
         if not isinstance(jogador_existe, Jogador):
-            print("Houve uma tentativa de adicionar um não-jogador como amigo.")
+            self.__tela_jogador.exibe_mensagem("Houve uma tentativa de adicionar um não-jogador como amigo.")
         elif jogador_existe.nome == self.__jogador_logado.nome:
-            print("Você não pode se adicionar como amigo.")
+            self.__tela_jogador.exibe_mensagem("Você não pode se adicionar como amigo.")
         elif any(jogador_existe.nome == amigo.nome for amigo in self.__jogador_logado.amigos):
-            print(f"{jogador_existe.nome} já é seu amigo.")
+            self.__tela_jogador.exibe_mensagem(f"{jogador_existe.nome} já é seu amigo.")
         else:
             self.__jogador_logado.amigos.append(jogador_existe)
-            print(f"{jogador_existe.nome} adicionado com sucesso à sua lista de amigos.")
+            self.__tela_jogador.exibe_mensagem(f"{jogador_existe.nome} adicionado com sucesso à sua lista de amigos.")
 
     def excluir_amigo(self):
-        nome_jogador = input("Digite o nome do amigo que quer excluir: ")
-        jogador_existe = self.eh_jogador(nome_jogador)
+        amigo = self.__tela_jogador.tela_adicionar_amigo()
+        jogador_existe = self.eh_jogador(amigo)
         for amigo in self.__jogador_logado.amigos:
             if jogador_existe.nome == amigo.nome:
                 self.__jogador_logado.amigos.remove(amigo)
+        self.__tela_jogador.exibe_mensagem("Amigo excluído com sucesso")
 
     def listar_amigos(self):
         amigos = []
