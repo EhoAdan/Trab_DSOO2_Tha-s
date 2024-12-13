@@ -109,7 +109,7 @@ class ControladorSistema:
             except NameError:
                 self.__tela_sistema.exibe_mensagem(mensagem)
         if conta_criada:
-            jogador_novo = Jogador(nome, email, senha)
+            jogador_novo = Jogador(nome, email, senha, 0)
             self.__controlador_jogador.jogadores.append(jogador_novo)
             self.__controlador_jogador.jogador_DAO.add(jogador_novo)
             self.__tela_sistema.exibe_mensagem(f"""Nova conta criada com sucesso!
