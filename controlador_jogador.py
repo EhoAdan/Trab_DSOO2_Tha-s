@@ -79,6 +79,7 @@ class ControladorJogador:
     def jogar_partida(self):
         self.__jogador_logado.partidas_jogadas += 1
         self.__tela_jogador.jogar_partida(self.__jogador_logado.partidas_jogadas)
+        self.__jogador_DAO.update(self.__jogador_logado)
 
     def historico_partidas(self):
         self.__tela_jogador.mostra_partidas_jogadas(self.__jogador_logado.partidas_jogadas)
@@ -100,6 +101,9 @@ class ControladorJogador:
             self.__tela_jogador.exibe_mensagem(f"{jogador_existe.nome} já é seu amigo.")
         else:
             self.__jogador_logado.amigos.append(jogador_existe)
+            jogador_existe.amigos.append(self.__jogador_logado)
+            self.__jogador_DAO.update(self.__jogador_logado)
+            self.__jogador_DAO.update(jogador_existe)
             self.__tela_jogador.exibe_mensagem(f"{jogador_existe.nome} adicionado com sucesso à sua lista de amigos.")
 
     def excluir_amigo(self):
@@ -111,6 +115,9 @@ class ControladorJogador:
             for amigo in self.__jogador_logado.amigos:
                 if jogador_existe.nome == amigo.nome:
                     self.__jogador_logado.amigos.remove(amigo)
+                    amigo.amigos.remove(self.__jogador_logado)
+                    self.__jogador_DAO.update(self.__jogador_logado)
+                    self.__jogador_DAO.update(amigo)
             self.__tela_jogador.exibe_mensagem("Amigo excluído com sucesso")
 
     def listar_amigos(self):
@@ -139,12 +146,6 @@ class ControladorJogador:
         jog_mais_partidas = None
         jog_mais_itens = None
         for jogador in self.__jogadores:
-            print(jogador.nome)
-            print(jogador.dinheiro_gasto)
-            print(jogador.saldo)
-            print(jogador.presentes_dados)
-            print(jogador.lista_itens_jogador)
-            print(f"{type(jogador)}, {type(jogador.dinheiro_gasto), {type(mais_dinheiro_gasto)}}")
             if jogador.dinheiro_gasto > mais_dinheiro_gasto:
                 jog_mais_dinheiro_gasto = jogador
                 mais_dinheiro_gasto = jogador.dinheiro_gasto
@@ -183,6 +184,9 @@ class ControladorJogador:
                         usuario_existe = True
                         if usuario_registrado.senha == senha_informada:
                             usuario_registrado.nome = novo_nome
+                            self.__jogador_DAO.update(usuario_registrado)
+                            for amigo in usuario_registrado.amigos:
+                                self.__jogador_DAO.update(amigo)
                             self.__tela_jogador.exibe_mensagem(f"Seu novo nome é: {usuario_registrado.nome}")
                         else:
                             self.__tela_jogador.exibe_mensagem("Senha incorreta.")
@@ -199,6 +203,10 @@ class ControladorJogador:
                             opcao = self.__tela_jogador.confirma_deleta()
                             if opcao == 1:
                                 self.__jogadores.remove(usuario_registrado)
+                                self.__jogador_DAO.remove(usuario_registrado)
+                                for amigo in usuario_registrado.amigos:
+                                    amigo.amigos.remove(usuario_registrado)
+                                    self.__jogador_DAO.update(amigo)
                                 self.__tela_jogador.exibe_mensagem("""Conta excluída com sucesso!
 Retornando à tela anterior.""")
                                 self.__controlador_sistema.abre_tela()
