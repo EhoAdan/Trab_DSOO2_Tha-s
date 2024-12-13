@@ -4,16 +4,20 @@ from jogador import Jogador
 from alteracao_exception import AlteracaoException
 from personagem import Personagem
 from skin import Skin
+from jogador_dao import JogadorDAO
 #Personagem e Skins estão aqui apenas
 #Para facilitar a apresentação
+
+
 
 class ControladorJogador:
 
     def __init__(self, controlador_sistema):
-        self.__jogadores = [Amale, Tchali, B_de_Bingança, Teste]
         self.__tela_jogador = TelaJogador()
         self.__controlador_sistema = controlador_sistema
         self.__jogador_logado = False
+        self.__jogador_DAO = JogadorDAO()
+        self.__jogadores = [jogador for jogador in self.__jogador_DAO.get_all()]
 
     @property
     def jogador_logado(self):
@@ -215,3 +219,8 @@ B_de_Bingança = Jogador("B de Bingança", "B@B", "123", 3000, \
                         [pikachu, pikachu_ash, pikachu_gmax, pikachu_surf, pikachu_wwe], \
                         36000, 0, 1, 6)
 Teste = Jogador("Teste", "a", "a", 10000)
+
+jogadores = [Amale, Tchali, B_de_Bingança, Teste]
+jogador_DAO = JogadorDAO()
+for jogador in jogadores:
+    jogador_DAO.add(jogador)
