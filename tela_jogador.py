@@ -50,31 +50,43 @@ class TelaJogador():
                 ]
         self.__window.close()
 
-
     def tela_estats(self, mais_dinheiro_gasto, mais_presentes_dados, \
                     mais_partidas_jogadas, mais_itens, \
                     jog_mais_dinheiro_gasto, jog_mais_presenteador, \
                     jog_mais_partidas, jog_mais_itens):
-    
+
+        sg.ChangeLookAndFeel('NeonYellow1')
         layout = [
             [sg.Text("Estatísticas dos Jogadores", font=("Helvetica", 16), justification='center')],
-            [sg.Text(f"O jogador que mais investiu no jogo foi: {jog_mais_dinheiro_gasto.nome}")],
-            [sg.Text(f"Com um aporte total de: {mais_dinheiro_gasto}")],
-            [sg.Text(f"O jogador candidato à Papai Noel é: {jog_mais_presenteador.nome}")],
-            [sg.Text(f"Presenteando um total de: {mais_presentes_dados} vezes")],
-            [sg.Text(f"O jogador ProPlayer do momento é: {jog_mais_partidas.nome}")],
-            [sg.Text(f"Jogando {mais_partidas_jogadas} partidas")],
-            [sg.Text(f"O jogador com mais colecionáveis no momento é: {jog_mais_itens.nome}")],
-            [sg.Text(f"Com um total de: {mais_itens} colecionáveis")],
-            [sg.Text("Itens do jogador com mais colecionáveis:")],
-            [sg.Multiline("\n".join([item.nome for item in jog_mais_itens.lista_itens_jogador]), size=(50, 10), disabled=True)],
-            [sg.Button("Fechar")]
+            [sg.PopupScrolled(f"""O jogador que mais investiu no jogo foi: {jog_mais_dinheiro_gasto.nome}
+Com um aporte total de: {mais_dinheiro_gasto}
+O jogador candidato à Papai Noel é: {jog_mais_presenteador.nome}
+Presenteando um total de: {mais_presentes_dados} vezes
+O jogador ProPlayer do momento é: {jog_mais_partidas.nome}
+Jogando {mais_partidas_jogadas} partidas
+O jogador com mais colecionáveis no momento é: {jog_mais_itens.nome}
+Com um total de: {mais_itens} colecionáveis
+Itens do jogador com mais colecionáveis:""")]
+                ]
+        self.__window.close()
+
+    def tela_troca_nome(self):
+        sg.ChangeLookAndFeel('NeonYellow1')
+        layout = [
+                  [sg.Text('Digite seus dados de login')],
+                  [sg.Text('Digite seu e-mail:'), sg.InputText('', key='email')],
+                  [sg.Text('Digite sua senha:'), sg.InputText('', key='senha')],
+                  [sg.Text('Digite seu novo nome:'), sg.InputText('', key='novo_nome')],
+                  [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
+        self.__window = sg.Window('Trocar de Nome').Layout(layout)
 
-        # Criação da janela
-        window = sg.Window("Estatísticas dos Jogadores", layout)
-
-        window.close()
+        button, values = self.__window.Read()
+        usuario = values['usuario']
+        senha = values['senha']
+        novo_nome = values['novo_nome']
+        self.close()
+        return usuario, senha, novo_nome
 
     def abre_tela(self):
         self.init_opcoes()
