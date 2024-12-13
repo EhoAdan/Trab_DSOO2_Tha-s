@@ -5,18 +5,21 @@ from tela_loja import TelaLoja
 from controlador_jogador import ControladorJogador
 from compra import Compra
 from loja_dao import LojaDAO
+from compras_dao import ComprasDAO
+import random
 
 
 class ControladorLoja:
 
-    def __init__(self, jogador: Jogador, controlador_sistema, historico_compras = []):
+    def __init__(self, jogador: Jogador, controlador_sistema):
         # Serve como o controlador de itens
         self.__tela_loja = TelaLoja()
         self.__controlador_jogador = ControladorJogador(controlador_sistema)
         self.__jogador = jogador
         self.__jogador_logado = 0
-        self.__historico_compras = historico_compras
         self.__loja_DAO = LojaDAO()
+        self.__compras_DAO = ComprasDAO()
+        self.__historico_compras = [compra for compra in self.__compras_DAO.get_all()]
         self.__itens = [item for item in self.__loja_DAO.get_all()]
 
     @property
@@ -149,12 +152,23 @@ class ControladorLoja:
                     tipo_item = "skin"
                 else:
                     tipo_item = "personagem"
-                compra = Compra(self.__jogador, item_comprado, tipo_item, "comprou")
+                while True:  # Gera um número identificador na compra
+                    compra_num = random.randint(0, 10000000)
+                    num_existe = False
+                    for compra_existente in self.__historico_compras:
+                        if compra_num == compra_existente.num_compra:
+                            num_existe = True
+                            break
+                    if not num_existe:
+                        break
+                compra = Compra(self.__jogador, item_comprado, tipo_item, "vendeu", compra_num)
                 self.__jogador.saldo -= item_comprado.preco
                 self.__jogador.lista_itens_jogador.append(item_comprado)
                 self.__historico_compras.append(compra)
+                self.__controlador_jogador.jogador_DAO.update(self.__jogador)
+                self.__compras_DAO.add(compra)
                 self.__tela_loja.exibe_mensagem(f"Sucesso, você comprou {item_comprado.nome} "
-                                                "por {item_comprado.preco}!")
+                                                f"por {item_comprado.preco}!")
                 return None
             self.__tela_loja.exibe_mensagem("Saldo insuficiente.")
 
@@ -191,10 +205,21 @@ class ControladorLoja:
                 tipo_item = "skin"
             elif isinstance(item_vendido, Personagem):
                 tipo_item = "personagem"
-            compra = Compra(self.__jogador, item_vendido, tipo_item, "vendeu")
+            while True:  # Gera um número identificador na compra
+                compra_num = random.randint(0, 10000000)
+                num_existe = False
+                for compra_existente in self.__historico_compras:
+                    if compra_num == compra_existente.num_compra:
+                        num_existe = True
+                        break
+                if not num_existe:
+                    break
+            compra = Compra(self.__jogador, item_vendido, tipo_item, "vendeu", compra_num)
             self.__jogador.saldo += item_vendido.preco
             self.__jogador.lista_itens_jogador.remove(item_vendido)
             self.__historico_compras.append(compra)
+            self.__controlador_jogador.jogador_DAO.update(self.__jogador)
+            self.__compras_DAO.add(compra)
             self.__tela_loja.exibe_mensagem(f"Sucesso, você vendeu {item_vendido.nome} por {item_vendido.preco}!")
             return None
 

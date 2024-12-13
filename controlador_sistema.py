@@ -3,6 +3,7 @@ from controlador_jogador import ControladorJogador
 from controlador_loja import ControladorLoja
 from jogador import Jogador
 
+
 class ControladorSistema:
     __instance = None
     def __init__(self):
@@ -110,6 +111,7 @@ class ControladorSistema:
         if conta_criada:
             jogador_novo = Jogador(nome, email, senha)
             self.__controlador_jogador.jogadores.append(jogador_novo)
+            self.__controlador_jogador.jogador_DAO.add(jogador_novo)
             self.__tela_sistema.exibe_mensagem(f"""Nova conta criada com sucesso!
 Seu nome de Jogador é: {nome}
 Seu e-mail é: {email}""")

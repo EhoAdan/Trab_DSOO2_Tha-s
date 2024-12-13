@@ -31,6 +31,10 @@ class ControladorJogador:
     def controlador_sistema(self):
         return self.__controlador_sistema
 
+    @property
+    def jogador_DAO(self):
+        return self.__jogador_DAO
+
     @jogadores.setter
     def jogadores(self, jogadores):
         self.__jogadores = jogadores
@@ -38,6 +42,10 @@ class ControladorJogador:
     @jogador_logado.setter
     def jogador_logado(self, jogador_logado):
         self.__jogador_logado = jogador_logado
+
+    @jogador_DAO.setter
+    def jogador_DAO(self, jogador_DAO):
+        self.__jogador_DAO = jogador_DAO
 
     def abre_tela(self):
         opcoes_tela = {0: None,
@@ -196,31 +204,3 @@ Retornando à tela anterior.""")
                 return self.abre_tela()
 
 #Lista preliminar de jogadores e itens
-
-ornn = Personagem("Ornn", 1000, ["Ornn Florescer Espiritual"])
-ornn_flor_esp = Skin("Ornn Florescer Espiritual", 500, ornn)
-mordekaiser = Personagem("Mordekaiser", 800)
-kratos = Personagem("Kratos", 500, ["Kratos Nórdico"])
-kratos_nordico = Skin("Kratos Nórdico", 200, kratos)
-pikachu = Personagem("Pikachu", 52, ["Pikachu Surfista", "Pikachu-Ash", "Pikachu Luta-Libre", "Pikachu Gigantamax"])
-pikachu_surf = Skin("Pikachu Surfista", 2, pikachu)
-pikachu_ash = Skin("Pikachu Ash", 22, pikachu)
-pikachu_wwe = Skin("Pikachu Luta-Libre", 30, pikachu)
-pikachu_gmax = Skin("Pikachu Gigantamax", 1200, pikachu)
-
-Amale = Jogador("Amale", "amale@gmail.com", "amale123", 150, \
-                [ornn, ornn_flor_esp, mordekaiser, kratos, kratos_nordico, \
-                 pikachu, pikachu_ash, pikachu_gmax, pikachu_surf, pikachu_wwe], \
-                    50000, 13, 7, 2)
-Tchali = Jogador("Tchali", "tchali123@gmail.com.br", "tchali123", 260, \
-                 [ornn, ornn_flor_esp, mordekaiser, kratos, kratos_nordico], \
-                 42000, 26, 18, 1)
-B_de_Bingança = Jogador("B de Bingança", "B@B", "123", 3000, \
-                        [pikachu, pikachu_ash, pikachu_gmax, pikachu_surf, pikachu_wwe], \
-                        36000, 0, 1, 6)
-Teste = Jogador("Teste", "a", "a", 10000)
-
-jogadores = [Amale, Tchali, B_de_Bingança, Teste]
-jogador_DAO = JogadorDAO()
-for jogador in jogadores:
-    jogador_DAO.add(jogador)

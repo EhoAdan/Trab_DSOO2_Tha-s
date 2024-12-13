@@ -34,6 +34,7 @@ class Jogador(ABC):
             self.__presentes_dados = presentes_dados
             self.__presentes_recebidos = presentes_recebidos
             self.__partidas_jogadas = partidas_jogadas
+            self.__amigos = []
         
         except TypeError:
             print("Houve um erro ao instanciar o jogador.")
@@ -87,7 +88,7 @@ class Jogador(ABC):
     @saldo.setter
     def saldo(self, saldo):
         try:
-            if not isinstance(saldo, str):
+            if not isinstance(saldo, int):
                 raise TypeError
             self.__saldo = saldo
 
@@ -101,7 +102,7 @@ class Jogador(ABC):
     @dinheiro_gasto.setter
     def dinheiro_gasto(self, dinheiro_gasto):
         try:
-            if not isinstance(dinheiro_gasto, str):
+            if not isinstance(dinheiro_gasto, int):
                 raise TypeError
             self.__dinheiro_gasto = dinheiro_gasto
 
@@ -114,13 +115,7 @@ class Jogador(ABC):
 
     @presentes_dados.setter
     def presentes_dados(self, presentes_dados):
-        try:
-            if not isinstance(presentes_dados, str):
-                raise TypeError
-            self.__presentes_dados = presentes_dados
-
-        except TypeError:
-            print("Houve um erro ao mudar os presentes_dados do jogador.")
+        self.__presentes_dados = presentes_dados
 
     @property
     def presentes_recebidos(self):
@@ -128,13 +123,7 @@ class Jogador(ABC):
 
     @presentes_recebidos.setter
     def presentes_recebidos(self, presentes_recebidos):
-        try:
-            if not isinstance(presentes_recebidos, str):
-                raise TypeError
-            self.__presentes_recebidos = presentes_recebidos
-
-        except TypeError:
-            print("Houve um erro ao mudar os presentes_recebidos do jogador.")
+        self.__presentes_recebidos = presentes_recebidos
 
     @property
     def partidas_jogadas(self):
@@ -143,7 +132,7 @@ class Jogador(ABC):
     @partidas_jogadas.setter
     def partidas_jogadas(self, partidas_jogadas):
         try:
-            if not isinstance(partidas_jogadas, str):
+            if not isinstance(partidas_jogadas, int):
                 raise TypeError
             self.__partidas_jogadas = partidas_jogadas
 
@@ -156,13 +145,7 @@ class Jogador(ABC):
 
     @amigos.setter
     def amigos(self, amigos):
-        try:
-            if not isinstance(amigos, str):
-                raise TypeError
-            self.__amigos = amigos
-
-        except TypeError:
-            print("Houve um erro ao mudar os amigos do jogador.")
+        self.__amigos = amigos
 
     @property
     def lista_itens_jogador(self):
@@ -170,10 +153,4 @@ class Jogador(ABC):
 
     @lista_itens_jogador.setter
     def lista_itens_jogador(self, lista_itens_jogador):
-        try:
-            if not isinstance(lista_itens_jogador, str):
-                raise TypeError
-            self.__lista_itens_jogador = lista_itens_jogador
-
-        except TypeError:
-            print("Houve um erro ao mudar a lista_itens_jogador do jogador.")
+        self.__lista_itens_jogador = lista_itens_jogador
