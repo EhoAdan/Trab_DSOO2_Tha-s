@@ -4,18 +4,20 @@ from skin import Skin
 from tela_loja import TelaLoja
 from controlador_jogador import ControladorJogador
 from compra import Compra
+from loja_dao import LojaDAO
 
 
 class ControladorLoja:
 
-    def __init__(self, jogador: Jogador, controlador_sistema, itens = [], historico_compras = []):
+    def __init__(self, jogador: Jogador, controlador_sistema, historico_compras = []):
         # Serve como o controlador de itens
         self.__tela_loja = TelaLoja()
-        self.__itens = itens
         self.__controlador_jogador = ControladorJogador(controlador_sistema)
         self.__jogador = jogador
         self.__jogador_logado = 0
         self.__historico_compras = historico_compras
+        self.__loja_DAO = LojaDAO()
+        self.__itens = [item for item in self.__loja_DAO.get_all()]
 
     @property
     def jogador(self):
@@ -36,6 +38,10 @@ class ControladorLoja:
     @property
     def controlador_jogador(self):
         return self.__controlador_jogador
+
+    @property
+    def loja_DAO(self):
+        return self.__loja_DAO
 
     @jogador.setter
     def jogador(self, jogador):
@@ -85,6 +91,10 @@ class ControladorLoja:
     @historico_compras.setter
     def historico_compras(self, historico_compras):
         self.__historico_compras = historico_compras
+
+    @loja_DAO.setter
+    def loja_DAO(self, loja_DAO):
+        self.__loja_DAO = loja_DAO
 
     def abre_tela(self):
         opcoes_loja = {0: None,

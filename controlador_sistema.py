@@ -1,16 +1,13 @@
 from tela_sistema import TelaSistema
-
 from controlador_jogador import ControladorJogador
 from controlador_loja import ControladorLoja
-from personagem import Personagem
 from jogador import Jogador
-from skin import Skin
 
 class ControladorSistema:
     __instance = None
-    def __init__(self, jogador, itens):
+    def __init__(self):
         self.__controlador_jogador = ControladorJogador(self)
-        self.__loja = ControladorLoja(jogador, self, itens)
+        self.__loja = ControladorLoja(None, self)
         self.__tela_sistema = TelaSistema()
         self.__logou = False
 
@@ -138,21 +135,4 @@ Seu e-mail é: {email}""")
                     4: self.login}
         while True:
             tela_opcoes[self.__tela_sistema.menu_opcoes()]()
-
 # Talvez dê pra fazer um controlador só de login e criação de contas
-
-
-ornn = Personagem("Ornn", 1000, ["Ornn Florescer Espiritual"])
-ornn_flor_esp = Skin("Ornn Florescer Espiritual", 500, ornn)
-mordekaiser = Personagem("Mordekaiser", 800)
-kratos = Personagem("Kratos", 500, ["Kratos Nórdico"])
-kratos_nordico = Skin("Kratos Nórdico", 200, kratos)
-pikachu = Personagem("Pikachu", 52, ["Pikachu Surfista", "Pikachu-Ash", "Pikachu Luta-Libre", "Pikachu Gigantamax"])
-pikachu_surf = Skin("Pikachu Surfista", 2, pikachu)
-pikachu_ash = Skin("Pikachu Ash", 22, pikachu)
-pikachu_wwe = Skin("Pikachu Luta-Libre", 30, pikachu)
-pikachu_gmax = Skin("Pikachu Gigantamax", 1200, pikachu)
-itens = [ornn, ornn_flor_esp, mordekaiser, kratos, kratos_nordico, pikachu, pikachu_ash,
-                    pikachu_gmax, pikachu_surf, pikachu_wwe]
-ControladorSistema(None, itens).abre_tela()
-
