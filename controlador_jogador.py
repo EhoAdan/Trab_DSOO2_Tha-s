@@ -93,10 +93,13 @@ class ControladorJogador:
     def excluir_amigo(self):
         amigo = self.__tela_jogador.tela_adicionar_amigo()
         jogador_existe = self.eh_jogador(amigo)
-        for amigo in self.__jogador_logado.amigos:
-            if jogador_existe.nome == amigo.nome:
-                self.__jogador_logado.amigos.remove(amigo)
-        self.__tela_jogador.exibe_mensagem("Amigo excluído com sucesso")
+        if not isinstance(jogador_existe, Jogador):
+            self.__tela_jogador.exibe_mensagem("Você tentou excluir um amigo que não existe")
+        else:
+            for amigo in self.__jogador_logado.amigos:
+                if jogador_existe.nome == amigo.nome:
+                    self.__jogador_logado.amigos.remove(amigo)
+            self.__tela_jogador.exibe_mensagem("Amigo excluído com sucesso")
 
     def listar_amigos(self):
         amigos = []
