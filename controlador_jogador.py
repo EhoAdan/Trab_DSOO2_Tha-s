@@ -139,6 +139,12 @@ class ControladorJogador:
         jog_mais_partidas = None
         jog_mais_itens = None
         for jogador in self.__jogadores:
+            print(jogador.nome)
+            print(jogador.dinheiro_gasto)
+            print(jogador.saldo)
+            print(jogador.presentes_dados)
+            print(jogador.lista_itens_jogador)
+            print(f"{type(jogador)}, {type(jogador.dinheiro_gasto), {type(mais_dinheiro_gasto)}}")
             if jogador.dinheiro_gasto > mais_dinheiro_gasto:
                 jog_mais_dinheiro_gasto = jogador
                 mais_dinheiro_gasto = jogador.dinheiro_gasto
@@ -203,4 +209,3 @@ Retornando à tela anterior.""")
                 self.__tela_jogador.exibe_mensagem("Opção inválida! Retornando a tela anterior.")
                 return self.abre_tela()
 
-#Lista preliminar de jogadores e itens
