@@ -152,9 +152,19 @@ m1=0..1</panel_attributes><additional_attributes>10;10;100;10</additional_attrib
 - datasource
 - cache
 --
-+ super().__init__(i'tens.pkl')
++ super().__init__('itens.pkl')
 + add(self, key, obj)
 + update(self, key, obj)
 + get(self, key)
 + remove(self, key)
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>768</x><y>228</y><w>18</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>768</x><y>108</y><w>18</w><h>54</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>768</x><y>228</y><w>18</w><h>60</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>768</x><y>108</y><w>18</w><h>54</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>132</y><w>114</w><h>84</h></coordinates><panel_attributes>Jogador_DAO
+--
+- datasource
+- cache
+--
++ super().__init__('jogadores.pkl')
++ add(self, key, obj)
++ update(self, key, obj)
++ get(self, key)
++ remove(self, key)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>318</x><y>48</y><w>414</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>670;10;10;10;10;140</additional_attributes></element><element><id>Relation</id><coordinates><x>318</x><y>210</y><w>18</w><h>180</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;280;10;10</additional_attributes></element></diagram>
