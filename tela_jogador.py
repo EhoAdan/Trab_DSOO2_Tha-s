@@ -87,6 +87,45 @@ Itens do jogador com mais colecionáveis:""")]
         novo_nome = values['novo_nome']
         self.close()
         return email, senha, novo_nome
+    
+    def tela_deleta_conta(self):
+        sg.ChangeLookAndFeel('NeonYellow1')
+        layout = [
+                  [sg.Text('Digite seus dados de login')],
+                  [sg.Text('Digite seu e-mail:'), sg.InputText('', key='email')],
+                  [sg.Text('Digite sua senha:'), sg.InputText('', key='senha')],
+                  [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Deletar Conta').Layout(layout)
+
+        button, values = self.__window.Read()
+        email = values['email']
+        senha = values['senha']
+        self.close()
+        return email, senha
+
+    def confirma_deleta(self):
+        self.confirma_deleta_opcoes()
+        button, values = self.__window.Read()
+        if values['1']:
+            opcao = 1
+        if values['2']:
+            opcao = 2
+        # cobre os casos de Retornar, fechar janela, ou clicar cancelar
+        #Isso faz com que retornemos a tela do sistema caso qualquer uma dessas coisas aconteca
+        self.close()
+        return opcao
+
+    def confirma_deleta_opcoes(self):
+        sg.ChangeLookAndFeel('NeonYellow1')
+        layout = [
+            [sg.Text('Excluir uma conta é um processo permanente!', font=("Helvica", 25))],
+            [sg.Text('Tem certeza que deseja excluí-la?', font=("Helvica", 15))],
+            [sg.Radio('Sim, desejo excluir minha conta.', "RD1", key='1')],
+            [sg.Radio('Não, não desejo excluir minha conta.', "RD1", key='2')],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Ações do Jogador').Layout(layout)
 
     def exibe_mensagem(self, mensagem):
         sg.ChangeLookAndFeel('NeonYellow1')
