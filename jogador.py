@@ -2,7 +2,7 @@ from typing import List
 from abc import ABC, abstractmethod
 
 class Jogador(ABC):
-    def __init__(self, nome, email, senha, saldo,
+    def __init__(self, nome, email, senha, saldo = 0,
                  dinheiro_gasto = 0, presentes_dados = 0,
                  presentes_recebidos = 0, partidas_jogadas = 0,
                  lista_itens_jogador = []):
