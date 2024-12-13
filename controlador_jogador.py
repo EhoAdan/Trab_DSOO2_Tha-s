@@ -141,24 +141,31 @@ class ControladorJogador:
                                 jog_mais_dinheiro_gasto, jog_mais_presenteador, \
                                 jog_mais_partidas, jog_mais_itens)
 
-    
     def alterar(self):
-        email_informado = input("Favor, confirme seu endereço de e-mail: ")
-        senha_informada = input("Favor, confirme sua senha: ")
-        for usuario_registrado in self.__jogadores:
-            if usuario_registrado.email == email_informado:
-                if usuario_registrado.senha == senha_informada:
-                    novo_nome = input("Favor, digite seu novo nome: ")
-                    if any(usuario_registrado.nome == novo_nome for usuario_registrado in self.__jogadores):
-                        print("Nome de usuário já existe")
-                        raise AlteracaoException
-                    else:
-                        usuario_registrado.nome = novo_nome
-                        print(f"""Nome alterado com sucesso!
-Seu novo nome é: {usuario_registrado.nome}""")
-                    return None
+        while True:
+            email_informado, senha_informada, novo_nome = self.__tela_jogador.tela_troca_nome()
+            usuario_existe = False
+            if email_informado == '':  
+                # Sai do login caso o botão cancelar seja apertado, também
+                # sai do login caso confirme sem nada escrito, mas não sei bem como arrumar
+                # de qualquer jeito, acho que não tem muito problema deixar assim
                 break
-
+            for jogador in self.__jogadores:
+                if novo_nome == jogador.nome:
+                    nome_ja_existe = True
+                    break
+            if not nome_ja_existe:
+                for usuario_registrado in self.__jogadores:
+                    if (usuario_registrado.email == email_informado):
+                        usuario_existe = True
+                        if usuario_registrado.senha == senha_informada:
+                            usuario_registrado.nome = novo_nome
+                            self.__tela_jogador.exibe_mensagem(f"Seu novo nome é: {usuario_registrado.nome}")
+                        break # Sai do loop caso o usuário exista mas a senha esteja errada
+            if not usuario_existe:
+                self.__tela_jogador.exibe_mensagem("Email não encontrado.")
+            else:
+                self.__tela_jogador.exibe_mensagem("Senha incorreta.")
 
     def deletar(self):
         email_informado = input("Favor, confirme seu endereço de e-mail: ")
