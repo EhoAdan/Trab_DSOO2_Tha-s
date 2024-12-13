@@ -88,6 +88,16 @@ Itens do jogador com mais colecionáveis:""")]
         self.close()
         return email, senha, novo_nome
 
+    def exibe_mensagem(self, mensagem):
+        sg.ChangeLookAndFeel('NeonYellow1')
+        layout = [
+            [sg.Text(mensagem)],
+            [sg.Button('Ok')]
+        ]
+        self.__window = sg.Window('O jogo').Layout(layout)
+        self.__window.Read()
+        self.close()
+    
     def abre_tela(self):
         self.init_opcoes()
         button, values = self.__window.Read()
