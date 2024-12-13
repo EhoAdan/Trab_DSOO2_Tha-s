@@ -30,7 +30,7 @@ partidas_jogadas: int, historico_compras: [Compra])</panel_attributes><additiona
 -preco: int
 -personagem: Personagem
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>762</x><y>558</y><w>90</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;130;90;130;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>678</x><y>276</y><w>270</w><h>126</h></coordinates><panel_attributes>Loja (ItemController)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>762</x><y>558</y><w>90</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;130;90;130;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>678</x><y>276</y><w>270</w><h>138</h></coordinates><panel_attributes>Loja (ItemController)
 --
 - jogador : Jogador
 - listaItensLoja : Item[]
@@ -44,10 +44,11 @@ partidas_jogadas: int, historico_compras: [Compra])</panel_attributes><additiona
 + comprar_item(self)
 + ver_hist_compras(self)
 + ver_hist_compras_proprio(self)
-+ venda_item(self)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>396</y><w>30</w><h>66</h></coordinates><panel_attributes>lt=-
++ venda_item(self)
++ checagem_itens(self)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>408</y><w>30</w><h>54</h></coordinates><panel_attributes>lt=-
 m1=0..1
 m2=n
-</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1032</x><y>276</y><w>192</w><h>114</h></coordinates><panel_attributes>Tela_Loja
+</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1032</x><y>276</y><w>192</w><h>114</h></coordinates><panel_attributes>Tela_Loja
 --
 - window
 --

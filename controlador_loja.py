@@ -122,30 +122,21 @@ class ControladorLoja:
         return None
 
     def buscar_itens_disponiveis(self):
-        i = 0
-        lista_itens = []
-        for item in self.__itens:
-            if (item not in self.__jogador.lista_itens_jogador and
-                (isinstance(item, Personagem) or item.personagem in self.__jogador.lista_itens_jogador)):
-                # Basicamente, verifica se o item tá na lista de itens do jogador,
-                # caso não esteja, verifica se é um personagem ou skin, caso seja skin,
-                # verifica se o jogador tem o personagem ao qual a skin pertence
-                i += 1
-                lista_itens.append(f"{i}: {item.nome}")
-        self.__tela_loja.exibir_itens(lista_itens)
+        lista_exibe_item = []
+        lista_itens = self.checagem_itens()
+        for item in lista_itens:
+            lista_exibe_item.append(f"{lista_itens.index(item) + 1}: {item.nome}")
+        self.__tela_loja.exibir_itens(lista_exibe_item)
 
     def comprar_item(self):
         # Vou deixar sem presentear por enquanto, mas se puxar do controlador de jogador
         # Deve dar sem muito problema
+        itens_disponiveis = self.checagem_itens()
+        amigos = self.__jogador.amigos
         while True:
             saldo = self.__jogador.saldo
             # Verifica se o item tá no inventário e adiciona ele caso seja um personagem ou,
             # caso seja uma skin, o personagem à qual a skin pertence tá no inventário
-            itens_disponiveis = [item for item in self.__itens if item 
-                                 not in self.__jogador.lista_itens_jogador and 
-                                 (isinstance(item, Personagem) or item.personagem in 
-                                  self.__jogador.lista_itens_jogador)]
-            amigos = self.__jogador.amigos
             item_comprado = self.__tela_loja.comprar_item(saldo, itens_disponiveis, amigos)
             if item_comprado == 0:  # Caso seja cancelada a compra
                 return None
@@ -162,7 +153,8 @@ class ControladorLoja:
                 self.__jogador.saldo -= item_comprado.preco
                 self.__jogador.lista_itens_jogador.append(item_comprado)
                 self.__historico_compras.append(compra)
-                self.__tela_loja.exibe_mensagem(f"Sucesso, você comprou {item_comprado.nome} por {item_comprado.preco}!")
+                self.__tela_loja.exibe_mensagem(f"Sucesso, você comprou {item_comprado.nome} "
+                                                "por {item_comprado.preco}!")
                 return None
             self.__tela_loja.exibe_mensagem("Saldo insuficiente.")
 
@@ -205,3 +197,25 @@ class ControladorLoja:
             self.__historico_compras.append(compra)
             self.__tela_loja.exibe_mensagem(f"Sucesso, você vendeu {item_vendido.nome} por {item_vendido.preco}!")
             return None
+
+    def checagem_itens(self):
+        i = 0
+        lista_itens = []
+        for item in self.__itens:
+            tem_personagem = False
+            tem_skin = False
+            for item_tem in self.__jogador.lista_itens_jogador:
+                # Checa se tem o personagem e/ou a skin pelo nome
+                if ((isinstance(item_tem, Personagem) and item_tem.nome == item.nome) or
+                isinstance(item, Skin) and item_tem.nome == item.personagem.nome):
+                    tem_personagem = True
+                elif (isinstance(item_tem, Skin) and isinstance(item, Skin) 
+                      and item_tem.nome == item.nome):
+                    tem_skin = True
+            if isinstance(item, Personagem) and not tem_personagem:
+                i += 1
+                lista_itens.append(item)
+            elif isinstance(item, Skin) and tem_personagem and not tem_skin:
+                i += 1
+                lista_itens.append(item)
+        return lista_itens
