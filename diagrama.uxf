@@ -30,7 +30,7 @@ partidas_jogadas: int, historico_compras: [Compra])</panel_attributes><additiona
 -preco: int
 -personagem: Personagem
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>762</x><y>558</y><w>90</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;130;90;130;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>678</x><y>276</y><w>270</w><h>120</h></coordinates><panel_attributes>Loja (ItemController)
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>762</x><y>558</y><w>90</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90;130;90;130;130</additional_attributes></element><element><id>UMLClass</id><coordinates><x>678</x><y>276</y><w>270</w><h>126</h></coordinates><panel_attributes>Loja (ItemController)
 --
 - jogador : Jogador
 - listaItensLoja : Item[]
@@ -38,15 +38,16 @@ partidas_jogadas: int, historico_compras: [Compra])</panel_attributes><additiona
 - historico_compras : [Compra]
 --
 + __init__(self, jogador: Jogador, controlador_sistema, historico_compras = [])
-+ abre_tela()
-+ buscar_todos_itens_loja()
++ abre_tela(self)
++ buscar_todos_itens_loja(self)
 + buscar_itens_disponiveis(comprar = False)
-+ comprar_item()
-+ ver_hist_compras()
-+ ver_hist_compras_proprio()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>390</y><w>30</w><h>72</h></coordinates><panel_attributes>lt=-
++ comprar_item(self)
++ ver_hist_compras(self)
++ ver_hist_compras_proprio(self)
++ venda_item(self)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>396</y><w>30</w><h>66</h></coordinates><panel_attributes>lt=-
 m1=0..1
 m2=n
-</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1032</x><y>276</y><w>192</w><h>114</h></coordinates><panel_attributes>Tela_Loja
+</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1032</x><y>276</y><w>192</w><h>114</h></coordinates><panel_attributes>Tela_Loja
 --
 - window
 --
@@ -57,7 +58,8 @@ m2=n
 + exibir_itens(self)
 + comprar_item(self, saldo, lista_itens, amigos_jogador)
 + historico_compras(self, hist_compras)
-+ exibir_mensagem(self, mensagem)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>942</x><y>324</y><w>102</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
++ exibir_mensagem(self, mensagem)
++ vender_item(self, lista_itens)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>942</x><y>324</y><w>102</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
 m1=0..1</panel_attributes><additional_attributes>150;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>228</x><y>378</y><w>222</w><h>186</h></coordinates><panel_attributes>JogadorController
 --
 -jogadores : Jogador[]
@@ -100,13 +102,14 @@ jog_mais_partidas, jog_mais_itens)
 + init_opcoes(self)
 + acoes_login(self)
 + acoes_opcoes_login(self)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>168</x><y>486</y><w>72</w><h>24</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..1</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>468</x><y>528</y><w>126</w><h>54</h></coordinates><panel_attributes>Compra
+m1=0..1</panel_attributes><additional_attributes>10;10;100;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>468</x><y>528</y><w>126</w><h>72</h></coordinates><panel_attributes>Compra
 --
 - jogador : Jogador
 - item : Item
 - tipo_item: str
 - data : str
-- hora: str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>444</x><y>456</y><w>252</w><h>66</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;400;90</additional_attributes></element><element><id>Relation</id><coordinates><x>708</x><y>654</y><w>78</w><h>18</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>110;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>474</x><y>234</y><w>132</w><h>138</h></coordinates><panel_attributes>ControladorSistema
+- hora: str
+- tipo_compra: str</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>444</x><y>456</y><w>252</w><h>66</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;400;90</additional_attributes></element><element><id>Relation</id><coordinates><x>708</x><y>654</y><w>78</w><h>18</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>110;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>474</x><y>234</y><w>132</w><h>138</h></coordinates><panel_attributes>ControladorSistema
 --
 - controlador_jogador(self)
 - loja: ControladorLoja(jogador, self)
@@ -120,7 +123,7 @@ m1=0..1</panel_attributes><additional_attributes>10;10;100;10</additional_attrib
 + criar_conta()
 + abre_jogador()
 + abre_loja()
-+ abre_tela()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>576</y><w>120</w><h>144</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;220;180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>522</x><y>330</y><w>168</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>260;20;260;10;10;330</additional_attributes></element><element><id>Relation</id><coordinates><x>588</x><y>504</y><w>102</w><h>66</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;90;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>294</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;130;30</additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>294</y><w>162</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>250;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>474</x><y>96</y><w>126</w><h>114</h></coordinates><panel_attributes>TelaSistema
++ abre_tela()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>594</y><w>120</w><h>126</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;190;180;10</additional_attributes></element><element><id>Relation</id><coordinates><x>522</x><y>330</y><w>168</w><h>210</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>260;20;260;10;10;330</additional_attributes></element><element><id>Relation</id><coordinates><x>588</x><y>504</y><w>102</w><h>66</h></coordinates><panel_attributes>lt=&lt;..</panel_attributes><additional_attributes>10;90;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>600</x><y>294</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;130;30</additional_attributes></element><element><id>Relation</id><coordinates><x>324</x><y>294</y><w>162</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>250;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>474</x><y>96</y><w>126</w><h>114</h></coordinates><panel_attributes>TelaSistema
 --
 - window
 --

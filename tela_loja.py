@@ -14,8 +14,9 @@ class TelaLoja():
             [sg.Radio('Buscar todos os itens da loja',"RD1", key='1')],
             [sg.Radio('Buscar os itens disponíveis',"RD1", key='2')],
             [sg.Radio('Comprar um item',"RD1", key='3')],
-            [sg.Radio('Ver o histórico de compras geral',"RD1", key='4')],
-            [sg.Radio('Ver o seu histórico de compras',"RD1", key='5')],
+            [sg.Radio('Vender um item',"RD1", key='4')],
+            [sg.Radio('Ver o histórico de compras geral',"RD1", key='5')],
+            [sg.Radio('Ver o seu histórico de compras',"RD1", key='6')],
             [sg.Radio('Retornar', 'RD1', key='0')],
             [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
         ]
@@ -35,6 +36,8 @@ class TelaLoja():
             opcao = 4
         if values['5']:
             opcao = 5
+        if values['6']:
+            opcao = 6
         if values['0'] or button in (None,'Cancelar'):
             opcao = 0
         self.close()
@@ -92,3 +95,24 @@ class TelaLoja():
         self.__window = sg.Window('Loja').Layout(layout)
         self.__window.Read()
         self.close()
+
+    def vender_item(self, lista_itens):
+        # Adiciono items para compra conforme quais itens estão disponíveis por list comprehension
+        layout = [
+            [sg.Text('Selecione qual item vender', font=("Helvica",25))],
+            [[sg.Radio(f'{item.nome} por {item.preco}', "RD1", 
+                       key=str(lista_itens.index(item) + 1))] for item in lista_itens],
+            [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Loja').Layout(layout)
+        button, values = self.__window.Read()
+        opcao = 0
+        if button in (None, 'Cancelar'):
+            opcao = 0
+        else: # Testa as opções
+            for i in range(1, len(lista_itens) + 1):
+                if values[str(i)]:
+                    opcao = i
+                    break
+        self.close()
+        return opcao

@@ -4,12 +4,13 @@ from datetime import datetime
 
 class Compra:
 
-    def __init__(self, jogador: Jogador, item: Item, tipo_item: str):
+    def __init__(self, jogador: Jogador, item: Item, tipo_item: str, tipo_compra: str):
         self.__jogador = jogador
         self.__item = item
         self.__data = datetime.today().strftime("%d/%m/%Y")
         self.__hora = datetime.now().strftime("%H:%M")
         self.__tipo_item = tipo_item
+        self.__tipo_compra = tipo_compra
     
     @property
     def item(self):
@@ -30,3 +31,7 @@ class Compra:
     @property
     def hora(self):
         return self.__hora
+
+    @property
+    def tipo_compra(self):
+        return self.__tipo_compra

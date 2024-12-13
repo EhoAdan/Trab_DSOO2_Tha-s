@@ -101,8 +101,9 @@ class ControladorLoja:
                 1: self.buscar_todos_itens_loja,
                 2: self.buscar_itens_disponiveis,
                 3: self.comprar_item,
-                4: self.ver_hist_compras,
-                5: self.ver_hist_compras_proprio
+                4: self.venda_item,
+                5: self.ver_hist_compras,
+                6: self.ver_hist_compras_proprio,
                 }
 
         while True:
@@ -157,7 +158,7 @@ class ControladorLoja:
                     tipo_item = "skin"
                 else:
                     tipo_item = "personagem"
-                compra = Compra(self.__jogador, item_comprado, tipo_item)
+                compra = Compra(self.__jogador, item_comprado, tipo_item, "comprou")
                 self.__jogador.saldo -= item_comprado.preco
                 self.__jogador.lista_itens_jogador.append(item_comprado)
                 self.__historico_compras.append(compra)
@@ -168,7 +169,7 @@ class ControladorLoja:
     def ver_hist_compras(self):
         hist_compras = []
         for compra in self.__historico_compras:
-            hist_compras.append(f"{compra.jogador.nome} comprou o/a {compra.tipo_item} "
+            hist_compras.append(f"{compra.jogador.nome} {compra.tipo_compra} o/a {compra.tipo_item} "
                                 f"{compra.item.nome} por {compra.item.preco} pontos no dia {compra.data} "
                                 f"às {compra.hora}.")
         self.__tela_loja.historico_compras(hist_compras)
@@ -178,8 +179,29 @@ class ControladorLoja:
         hist_compras = []
         for compra in self.__historico_compras:
             if compra.jogador.nome == self.__jogador.nome:
-                hist_compras.append(f"{compra.jogador.nome} comprou o/a {compra.tipo_item} "
+                hist_compras.append(f"{compra.jogador.nome} {compra.tipo_compra} o/a {compra.tipo_item} "
                                 f"{compra.item.nome} por {compra.item.preco} pontos no dia {compra.data} "
                                 f"às {compra.hora}.")
         self.__tela_loja.historico_compras(hist_compras)
         return None
+
+    def venda_item(self):
+        while True:
+            itens_disponiveis = [item for item in self.__jogador.lista_itens_jogador]
+            item_vendido = self.__tela_loja.vender_item(itens_disponiveis)
+            if item_vendido == 0:  # Caso seja cancelada a venda
+                return None
+            item_vendido = itens_disponiveis[item_vendido - 1] # Pega o número retornado e vê qual item
+                                                               # tá na posição
+            if not item_vendido:
+                return None
+            if isinstance(item_vendido, Skin):
+                tipo_item = "skin"
+            elif isinstance(item_vendido, Personagem):
+                tipo_item = "personagem"
+            compra = Compra(self.__jogador, item_vendido, tipo_item, "vendeu")
+            self.__jogador.saldo += item_vendido.preco
+            self.__jogador.lista_itens_jogador.remove(item_vendido)
+            self.__historico_compras.append(compra)
+            self.__tela_loja.exibe_mensagem(f"Sucesso, você vendeu {item_vendido.nome} por {item_vendido.preco}!")
+            return None
