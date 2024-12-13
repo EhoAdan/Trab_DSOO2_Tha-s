@@ -1,4 +1,4 @@
-from tela_jogador import TelaJogador
+rom tela_jogador import TelaJogador
 from item import Item
 from jogador import Jogador
 from alteracao_exception import AlteracaoException
@@ -65,12 +65,11 @@ class ControladorJogador:
             opcao()
 
     def jogar_partida(self):
-        print("Você jogou uma partida")
         self.__jogador_logado.partidas_jogadas += 1
-        print(f"Você já jogou {self.__jogador_logado.partidas_jogadas} partidas")
-    
+        self.__tela_jogador.jogar_partida(self.__jogador_logado.partidas_jogadas)
+
     def historico_partidas(self):
-        print(f"Você já jogou {self.__jogador_logado.partidas_jogadas} partidas")
+        self.__tela_jogador.mostra_partidas_jogadas(self.__jogador_logado.partidas_jogadas)
 
     def eh_jogador(self, nome_jogador):
         for jogador_existe in self.__jogadores:
@@ -99,15 +98,15 @@ class ControladorJogador:
                 self.__jogador_logado.amigos.remove(amigo)
 
     def listar_amigos(self):
+        amigos = []
         if len(self.__jogador_logado.amigos) > 0:
-            print("Esta é sua lista atual de amigos:")
             for amigo in self.__jogador_logado.amigos:
-                print(amigo.nome)
+                amigos.append(amigo.nome)
+            self.__tela_jogador.lista_amigos(amigos)
         else:
-            print("Você ainda não tem nenhum amigo :(")
+            self.__tela_jogador.lista_amigos_zero()
         
     def listar(self): #Interface Gráfica feita
-
         lista_jogadores = []
         for jogador in self.__jogadores:
             lista_jogadores.append(jogador.nome)
@@ -136,20 +135,12 @@ class ControladorJogador:
             if len(jogador.lista_itens_jogador) > mais_itens:
                 jog_mais_itens = jogador
                 mais_itens = len(jogador.lista_itens_jogador)
-        print(f"""O jogador que mais investiu no jogo foi:
-{jog_mais_dinheiro_gasto.nome}!!!
-com um aporte total de {mais_dinheiro_gasto}!!!""")
-        print(f"""O jogador candidato à Papai Noel é:
-{jog_mais_presenteador.nome}!!!
-presenteando um total de {mais_presentes_dados} vezes!!!""")
-        print(f"""O jogador ProPlayer do momento:
-{jog_mais_partidas.nome}!!!
-jogando {mais_partidas_jogadas} partidas!!!""")
-        print(f"""O jogador com mais colecionáveis no momento é:
-{jog_mais_itens.nome}!!!
-com um total de {mais_itens} colecionáveis!!!""")
-        for item in jog_mais_itens.lista_itens_jogador:
-            print(item.nome)
+        
+        self.__tela_jogador.tela_estats(mais_dinheiro_gasto, mais_presentes_dados, \
+                                mais_partidas_jogadas, mais_itens, \
+                                jog_mais_dinheiro_gasto, jog_mais_presenteador, \
+                                jog_mais_partidas, jog_mais_itens)
+
     
     def alterar(self):
         email_informado = input("Favor, confirme seu endereço de e-mail: ")
