@@ -145,6 +145,7 @@ class ControladorJogador:
         while True:
             email_informado, senha_informada, novo_nome = self.__tela_jogador.tela_troca_nome()
             usuario_existe = False
+            nome_ja_existe = False
             if email_informado == '':  
                 # Sai do login caso o botão cancelar seja apertado, também
                 # sai do login caso confirme sem nada escrito, mas não sei bem como arrumar
