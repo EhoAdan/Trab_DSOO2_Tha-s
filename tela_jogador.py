@@ -82,11 +82,11 @@ Itens do jogador com mais colecionáveis:""")]
         self.__window = sg.Window('Trocar de Nome').Layout(layout)
 
         button, values = self.__window.Read()
-        usuario = values['usuario']
+        email = values['email']
         senha = values['senha']
         novo_nome = values['novo_nome']
         self.close()
-        return usuario, senha, novo_nome
+        return email, senha, novo_nome
 
     def abre_tela(self):
         self.init_opcoes()
