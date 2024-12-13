@@ -9,6 +9,34 @@ class TelaJogador():
     def close(self):
         self.__window.Close()
 
+    def tela_adicionar_amigo(self):
+        sg.ChangeLookAndFeel('NeonYellow1')
+        layout = [
+                  [sg.Text('Digite o nome do amigo que quer adicionar:')],
+                  [sg.Text('Nome do Amigo:'), sg.InputText('', key='amigo')],
+                  [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Adicionando Amigos').Layout(layout)
+
+        button, values = self.__window.Read()
+        amigo = values['amigo']
+        self.close()
+        return amigo
+    
+    def tela_excluir_amigo(self):
+        sg.ChangeLookAndFeel('NeonYellow1')
+        layout = [
+                  [sg.Text('Digite o nome do amigo que quer excluir:')],
+                  [sg.Text('Nome do Amigo:'), sg.InputText('', key='amigo')],
+                  [sg.Button('Confirmar'), sg.Cancel('Cancelar')]
+        ]
+        self.__window = sg.Window('Excluindo Amigos').Layout(layout)
+
+        button, values = self.__window.Read()
+        amigo = values['amigo']
+        self.close()
+        return amigo
+
     def mostra_lista_jogadores(self, lista_jogadores):
         #sg.theme_previewer()
         sg.ChangeLookAndFeel('NeonYellow1')
