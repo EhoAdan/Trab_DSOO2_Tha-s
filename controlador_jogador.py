@@ -1,4 +1,4 @@
-rom tela_jogador import TelaJogador
+from tela_jogador import TelaJogador
 from item import Item
 from jogador import Jogador
 from alteracao_exception import AlteracaoException
