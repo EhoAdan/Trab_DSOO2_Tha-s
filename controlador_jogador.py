@@ -162,39 +162,30 @@ class ControladorJogador:
                         if usuario_registrado.senha == senha_informada:
                             usuario_registrado.nome = novo_nome
                             self.__tela_jogador.exibe_mensagem(f"Seu novo nome é: {usuario_registrado.nome}")
-                        break # Sai do loop caso o usuário exista mas a senha esteja errada
+                        else:
+                            self.__tela_jogador.exibe_mensagem("Senha incorreta.")
+                            break # Sai do loop caso o usuário exista mas a senha esteja errada
             if not usuario_existe:
                 self.__tela_jogador.exibe_mensagem("Email não encontrado.")
-            else:
-                self.__tela_jogador.exibe_mensagem("Senha incorreta.")
 
     def deletar(self):
-        email_informado = input("Favor, confirme seu endereço de e-mail: ")
-        senha_informada = input("Favor, confirme sua senha: ")
-        try:
-            for usuario_registrado in self.__jogadores:
-                if usuario_registrado.email == email_informado:
-                    if usuario_registrado.senha == senha_informada:
-                        print("""Excluir uma conta é um processo permanente!
-Tem certeza que deseja excluí-la?
-0- Não, não desejo excluir minha conta.
-9- Sim, desejo excluir minha conta.
-""")
-                        resposta = int(input())
-                        if resposta == 9:
-                            self.__jogadores.remove(usuario_registrado)
-                            print("""Conta excluída com sucesso!
+            email_informado, senha_informada = self.__tela_jogador.tela_deleta_conta()
+            try:
+                for usuario_registrado in self.__jogadores:
+                    if usuario_registrado.email == email_informado:
+                        if usuario_registrado.senha == senha_informada:
+                            opcao = self.__tela_jogador.confirma_deleta()
+                            if opcao == 1:
+                                self.__jogadores.remove(usuario_registrado)
+                                self.__tela_jogador.exibe_mensagem("""Conta excluída com sucesso!
 Retornando à tela anterior.""")
-                            self.__controlador_sistema.abre_tela()
-                        elif resposta == 0:
-                            print("Que bom que decidiu não excluir sua conta e continuar conosco!")
-                            self.abre_tela()
-                        else:
-                            print("Opção inválida! Retornando a tela anterior.")
-                            self.abre_tela()
-        except ValueError:
-            print("Opção inválida! Retornando a tela anterior.")
-            return self.abre_tela()
+                                self.__controlador_sistema.abre_tela()
+                            elif opcao == 2:
+                                self.__tela_jogador.exibe_mensagem("Que bom que decidiu não excluir sua conta e continuar conosco!")
+                                self.abre_tela()
+            except ValueError:
+                self.__tela_jogador.exibe_mensagem("Opção inválida! Retornando a tela anterior.")
+                return self.abre_tela()
 
 #Lista preliminar de jogadores e itens
 
@@ -212,11 +203,11 @@ pikachu_gmax = Skin("Pikachu Gigantamax", 1200, pikachu)
 Amale = Jogador("Amale", "amale@gmail.com", "amale123", 150, \
                 [ornn, ornn_flor_esp, mordekaiser, kratos, kratos_nordico, \
                  pikachu, pikachu_ash, pikachu_gmax, pikachu_surf, pikachu_wwe], \
-                    50000, 13, 7, 596)
+                    50000, 13, 7, 2)
 Tchali = Jogador("Tchali", "tchali123@gmail.com.br", "tchali123", 260, \
                  [ornn, ornn_flor_esp, mordekaiser, kratos, kratos_nordico], \
-                 42000, 26, 18, 126)
+                 42000, 26, 18, 1)
 B_de_Bingança = Jogador("B de Bingança", "B@B", "123", 3000, \
                         [pikachu, pikachu_ash, pikachu_gmax, pikachu_surf, pikachu_wwe], \
-                        36000, 0, 1, 5612)
+                        36000, 0, 1, 6)
 Teste = Jogador("Teste", "a", "a", 10000)
